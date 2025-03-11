@@ -10,4 +10,8 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'formulario',
+    loadComponent: () => import('./formulario/formulario.page').then(m => m.FormularioPage)
+  },
 ];

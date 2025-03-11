@@ -16,11 +16,14 @@
     </ion-item>
   </ion-list>
 
-  <ion-item>
-    <ion-input placeholder="Título" [(ngModel)]="newTask.title"></ion-input>
-    <ion-input placeholder="Descripción" [(ngModel)]="newTask.description"></ion-input>
-  </ion-item>
-  <ion-button expand="full" (click)="saveTask()">
-    {{ editing ? 'Actualizar' : 'Agregar' }} Tarea
-  </ion-button>
+  <!-- Formulario para agregar o editar tareas -->
+  <form [formGroup]="form">
+    <ion-item>
+      <app-custom-form formControlName="task"></app-custom-form>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">
+      {{ editing ? 'Actualizar' : 'Agregar' }} Tarea
+    </ion-button>
+  </form>
 </ion-content>

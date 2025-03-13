@@ -1,33 +1,39 @@
 import { Injectable } from '@angular/core';
+import { Firestore, collection, addDoc, updateDoc, deleteDoc, doc, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 export interface Task {
-  id: number;
-  title: string;
-  description: string;
+
+  id?: string;
+  name: string;
+  day: string;
+  completed: boolean;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class TaskService {
-  private tasks: Task[] = [];
-  private nextId = 1;
+  private tasksCollection = collection(this.firestore, 'tasks');
 
-  getTasks(): Task[] {
-    return [...this.tasks];
+  constructor(private firestore: Firestore) { }
+
+  getTasks(): Observable<Task[]> {
+    return collectionData(this.tasksCollection, { idField: 'id' }) as Observable<Task[]>;
   }
 
-  addTask(task: Task): void {
-    task.id = this.nextId++;
-    this.tasks.push(task);
+  addTask(task: Task) {
+    return addDoc(this.tasksCollection, task);
   }
 
-  updateTask(updatedTask: Task): void {
-    const index = this.tasks.findIndex(t => t.id === updatedTask.id);
-    if (index !== -1) {
-      this.tasks[index] = updatedTask;
-    }
+  updateTask(id: string, data: Partial<Task>) {
+    const taskDoc = doc(this.firestore, `tasks/${id}`);
+    return updateDoc(taskDoc, data);
   }
 
-  deleteTask(id: number): void {
-    this.tasks = this.tasks.filter(task => task.id !== id);
+  deleteTask(id: string) {
+    const taskDoc = doc(this.firestore, `tasks/${id}`);
+    return deleteDoc(taskDoc);
   }
+
 }

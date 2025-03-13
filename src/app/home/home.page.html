@@ -1,20 +1,125 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<!DOCTYPE html>
+<html lang="es">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas</title>
+  <style>
+    /* Estilos personalizados */
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
-</ion-content>
+    /* Fondo del ion-content */
+    .custom-content {
+      background-color: #333;
+      /* Gris oscuro */
+      padding: 16px;
+    }
+
+    /* Título h2 */
+    .custom-title {
+      color: #fff;
+      /* Blanco */
+    }
+
+    /* Estilo del botón */
+    .custom-button {
+      color: #00FF00;
+      /* Verde */
+      background-color: #222;
+      /* Fondo oscuro */
+      border: none;
+      /* Sin borde */
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .custom-button:hover {
+      background-color: #444;
+      /* Fondo más claro al pasar el mouse */
+    }
+
+    /* Estilo de la tabla */
+    .custom-table {
+      margin-top: 20px;
+      width: 100%;
+      text-align: left;
+      color: #7f0000;
+      /* Rojo oscuro */
+      border-collapse: collapse;
+    }
+
+    .custom-table th,
+    .custom-table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .custom-table th {
+      background-color: #444;
+      color: #fff;
+    }
+
+    .custom-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Input y botones dentro de la tabla */
+    .custom-input {
+      padding: 5px;
+      width: 100%;
+    }
+
+    .custom-checkbox {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <ion-content class="custom-content">
+    <h2 class="custom-title">Lista</h2>
+
+    <input #nameInput type="text" class="custom-input" placeholder="Nombre" />
+    <input #dayInput type="date" class="custom-input" placeholder="Día" />
+
+    <button class="custom-button"
+      (click)="addItem(nameInput.value, dayInput.value); nameInput.value = ''; dayInput.value = '';">
+      Agregar
+    </button>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Día</th>
+          <th>Completado</th>
+          <th>Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tasks$ | async">
+          <td>{{ item.id }}</td>
+          <td><input type="text" [(ngModel)]="item.name" class="custom-input" /></td>
+          <td><input type="date" [(ngModel)]="item.day" class="custom-input" /></td>
+          <td>
+            <input type="checkbox" [checked]="item.completed" (change)="toggleCompleted(item.id!, $event)"
+              class="custom-checkbox" />
+          </td>
+          <td>
+            <button class="custom-button" (click)="deleteItem(item.id!)">Eliminar</button>
+            <button class="custom-button" (click)="editTask(item.id!, item.name, item.day)">Guardar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-content>
+
+  <script>
+    // Aquí agregarías tu lógica de Angular o JavaScript si lo necesitas
+  </script>
+</body>
+
+</html>
